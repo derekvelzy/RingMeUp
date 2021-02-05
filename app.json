@@ -1,0 +1,12 @@
+{
+  "name": "riderForum",
+  "displayName": "riderForum",
+  "expo": {
+    "name": "riderForum",
+    "slug": "riderForum",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
