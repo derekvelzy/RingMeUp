@@ -1,11 +1,42 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Context } from '../Context.js';
 import { StyleSheet, Text, View, Button, ScrollView, Dimensions, Animated } from 'react-native';
 import Pie from 'react-native-pie';
 import { months } from '../Calendar/Dates.js';
 
 const Charts = () => {
-  const {page, setPage, chartShrink, chartUp, labelUp} = useContext(Context);
+  const {
+    page,
+    setPage,
+    chartShrink,
+    chartUp,
+    labelUp,
+    weekProg,
+    weekGoal,
+    monthProg,
+    monthGoal
+  } = useContext(Context);
+
+  const [monthClipped, setMonthClipped] = useState('');
+  const [weekClipped, setWeekClipped] = useState('');
+
+  useEffect(() => {
+    const num = (100 * (monthProg/(monthGoal + 0.0001))).toString();
+    let clipped = num;
+    if (num.indexOf('.') >= 0) {
+      clipped = num.substring(0, num.indexOf('.') + 2)
+    }
+    setMonthClipped(clipped);
+  }, [monthProg])
+
+  useEffect(() => {
+    const num = (100 * (weekProg/(weekGoal + 0.0001))).toString();
+    let clipped = num;
+    if (num.indexOf('.') >= 0) {
+      clipped = num.substring(0, num.indexOf('.') + 2)
+    }
+    setWeekClipped(clipped);
+  }, [weekProg])
 
   return (
     <View style={styles.container}>
@@ -27,7 +58,7 @@ const Charts = () => {
             innerRadius={Dimensions.get('window').width * 0.19}
             sections={[
               {
-                percentage: 70,
+                percentage: 100 * (monthProg/(monthGoal + 0.0001)),
                 color: 'rgb(6, 191, 166)',
               },
             ]}
@@ -51,7 +82,7 @@ const Charts = () => {
             innerRadius={Dimensions.get('window').width * 0.19}
             sections={[
               {
-                percentage: 40,
+                percentage: 100 * (weekProg/(weekGoal + 0.0001)),
                 color: 'rgb(6, 191, 166)',
               },
             ]}
@@ -69,18 +100,18 @@ const Charts = () => {
             ]
           }}
         >
-          <Text style={styles.gaugeText}>70%</Text>
+          <Text style={styles.gaugeText}>{monthClipped}%</Text>
         </Animated.View>
         <Animated.View
           style={{
-            marginRight: Dimensions.get('window').width * 0.18,
+            marginRight: Dimensions.get('window').width * 0.16,
             transform: [
               {scale: chartShrink},
               {translateY: chartUp}
             ]
           }}
         >
-          <Text style={styles.gaugeText}>40%</Text>
+          <Text style={styles.gaugeText}>{weekClipped}%</Text>
         </Animated.View>
       </View>
       <View style={styles.labels}>
@@ -123,13 +154,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: Dimensions.get('window').width * 0.165,
+    top: Dimensions.get('window').width * 0.17,
     width: Dimensions.get('window').width,
     alignSelf: 'center',
 
   },
   gaugeText: {
-    fontSize: 30,
+    fontSize: 25,
     color: 'white'
   },
   labels: {

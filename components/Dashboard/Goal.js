@@ -1,11 +1,134 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Context } from '../Context.js';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
+import moment from 'moment';
 
 const Goal = ({text, day, progress, quantity, frequency, path}) => {
   const {user, page, setPage, animate, weekGoal, weekProg, monthGoal, monthProg} = useContext(Context);
+
+  useEffect(() => {
+    console.log('uuuuuzer', user);
+    if (user) {
+      dailyUpdate();
+      weeklyUpdate();
+      monthlyUpdate();
+    }
+  }, [user]);
+
+  const dailyUpdate = async () => {
+    if (frequency === 'daily') {
+      const today = moment().format('MM-DD-YYYY');
+      let prevDate = await firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Date')
+        .doc('Day')
+        .get();
+      if (prevDate._data.time !== today) {
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Goals')
+          .doc(path)
+          .set({
+            task: text,
+            progress: 0,
+            quantity,
+            frequency,
+          })
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Date')
+          .doc('Day')
+          .set({time: today})
+      }
+    }
+  }
+
+  const weeklyUpdate = async () => {
+    if (frequency === 'weekly') {
+      const startWeek = moment().startOf('week').format('MM-DD-YYYY');
+      let prevDate = await firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Date')
+        .doc('Week')
+        .get();
+      if (prevDate._data.time !== startWeek) {
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Goals')
+          .doc(path)
+          .set({
+            task: text,
+            progress: 0,
+            quantity,
+            frequency,
+          })
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Date')
+          .doc('Week')
+          .set({time: startWeek})
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Progress')
+          .doc('Week')
+          .set({
+            goal: weekGoal,
+            progress: 0,
+          })
+      }
+    }
+  }
+
+  const monthlyUpdate = async () => {
+    if (frequency === 'monthly') {
+      const startMonth = moment().startOf('month').format('M');
+      console.log(startMonth);
+      let prevDate = await firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Date')
+        .doc('Month')
+        .get();
+      console.log(prevDate._data.time === startMonth)
+      if (prevDate._data.time !== startMonth) {
+        // firestore()
+        //   .collection('Users')
+        //   .doc(user.email)
+        //   .collection('Goals')
+        //   .doc(path)
+        //   .set({
+        //     task: text,
+        //     progress: 0,
+        //     quantity,
+        //     frequency,
+        //   })
+        // firestore()
+        //   .collection('Users')
+        //   .doc(user.email)
+        //   .collection('Date')
+        //   .doc('Week')
+        //   .set({time: startWeek})
+        // firestore()
+        //   .collection('Users')
+        //   .doc(user.email)
+        //   .collection('Progress')
+        //   .doc('Month')
+        //   .set({
+        //     goal: monthGoal,
+        //     progress: 0,
+        //   })
+      }
+    }
+  }
 
   const add = () => {
     let sum = 1;
@@ -47,9 +170,25 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
               progress: monthProg + 1,
             });
         } else if (frequency === 'weekly') {
-
+          firestore()
+            .collection('Users')
+            .doc(user.email)
+            .collection('Progress')
+            .doc('Week')
+            .set({
+              goal: weekGoal,
+              progress: weekProg + 5,
+            });
         } else if (frequency === 'monthly') {
-
+          firestore()
+            .collection('Users')
+            .doc(user.email)
+            .collection('Progress')
+            .doc('Month')
+            .set({
+              goal: monthGoal,
+              progress: monthProg + 10,
+            });
         }
       }
     }
@@ -68,7 +207,49 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
           quantity,
           frequency,
         })
+      if (progress === quantity) {
+        if (frequency === 'daily') {
+          firestore()
+            .collection('Users')
+            .doc(user.email)
+            .collection('Progress')
+            .doc('Week')
+            .set({
+              goal: weekGoal,
+              progress: weekProg - 1,
+            });
+          firestore()
+            .collection('Users')
+            .doc(user.email)
+            .collection('Progress')
+            .doc('Month')
+            .set({
+              goal: monthGoal,
+              progress: monthProg - 1,
+            });
+        } else if (frequency === 'weekly') {
+          firestore()
+            .collection('Users')
+            .doc(user.email)
+            .collection('Progress')
+            .doc('Week')
+            .set({
+              goal: weekGoal,
+              progress: weekProg - 5,
+            });
+        } else if (frequency === 'monthly') {
+          firestore()
+            .collection('Users')
+            .doc(user.email)
+            .collection('Progress')
+            .doc('Month')
+            .set({
+              goal: monthGoal,
+              progress: monthProg - 10,
+            });
+        }
       }
+    }
   }
 
   return (
@@ -85,7 +266,22 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
         ]
       }}
     >
-      <View style={styles.container}>
+      <View style={{
+         width: Dimensions.get('window').width * 0.88,
+         // height: 70,
+         flexDirection: 'row',
+         justifyContent: 'space-between',
+         backgroundColor: '#fff',
+         alignItems: 'center',
+         padding: 12,
+         marginTop: 14,
+         marginBottom: 14,
+         borderRadius: 35,
+         shadowOffset: {width: 0, height: 0},
+         shadowColor: progress === quantity ? 'rgb(6, 191, 166)' : 'black',
+         shadowOpacity: progress === quantity ? 0.7 : 0.15,
+         shadowRadius: progress === quantity ? 20 : 15,
+      }}>
         <TouchableOpacity style={styles.edit}>
           <Icon name="ellipsis-v" size={30} color="rgb(220, 220, 220)" />
         </TouchableOpacity>
@@ -141,7 +337,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     marginBottom: 14,
     borderRadius: 35,
-    shadowOffset: {width: 0, height: -10},
+    shadowOffset: {width: 0, height: 10},
     shadowColor: 'black',
     shadowOpacity: 0.15,
     shadowRadius: 15,

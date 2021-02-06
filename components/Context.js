@@ -26,20 +26,6 @@ const ConfigProvider = ({children}) => {
   const animate = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    getDate();
-  }, [])
-
-  const getDate = async () => {
-    const today = moment().format();
-    console.log(today);
-    // firestore()
-    //   .collection('Users')
-    //   .doc(user.email)
-    //   .collection('Progress')
-    //   .doc('Month')
-  }
-
-  useEffect(() => {
     if (user) {
       return firestore()
         .collection('Users')
@@ -51,7 +37,7 @@ const ConfigProvider = ({children}) => {
           setWeekProg(querySnapshot._data.progress)
         })
     }
-  }, [])
+  }, [user])
 
   useEffect(() => {
     if (user) {
@@ -65,7 +51,7 @@ const ConfigProvider = ({children}) => {
           setMonthProg(querySnapshot._data.progress);
         })
     }
-  }, [])
+  }, [user])
 
   useEffect(() => {
     if (user) {
@@ -201,6 +187,27 @@ const ConfigProvider = ({children}) => {
         .then(() => {
           console.log('user added!');
         });
+      let today = moment().format('MM-DD-YYYY');
+      let startWeek = moment().startOf('week').format('MM-DD-YYYY');
+      let startMonth = moment().startOf('month').format('M');
+      firestore()
+        .collection('Users')
+        .doc(email.toLowerCase())
+        .collection('Date')
+        .doc('Day')
+        .set({time: today})
+      firestore()
+        .collection('Users')
+        .doc(email.toLowerCase())
+        .collection('Date')
+        .doc('Week')
+        .set({time: startWeek})
+      firestore()
+        .collection('Users')
+        .doc(email.toLowerCase())
+        .collection('Date')
+        .doc('Month')
+        .set({time: startMonth})
     } catch (e) {
       // setSignupError(true);
       console.log('error signing up', e);

@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     backgroundColor: 'rgb(245, 245, 255)',
-    minHeight: 700,
+    marginBottom: 50,
   },
   goalText: {
     fontSize: 30,

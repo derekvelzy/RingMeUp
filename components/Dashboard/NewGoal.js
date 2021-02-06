@@ -42,8 +42,10 @@ const NewGoal = () => {
     } else if (!quantNum) {
       setQuantErr(true);
     } else {
-      const mon = await firestore().collection('Users').doc(user.email).collection('Progress').doc('Month').get()
-      const we = await firestore().collection('Users').doc(user.email).collection('Progress').doc('Week').get()
+      // const mon = await firestore().collection('Users').doc(user.email).collection('Progress').doc('Month').get()
+      // const we = await firestore().collection('Users').doc(user.email).collection('Progress').doc('Week').get()
+      // console.log(mon, we)
+      // console.log(monthGoal, weekGoal)
       firestore()
         .collection('Users')
         .doc(user.email)
@@ -145,7 +147,7 @@ const NewGoal = () => {
             style={styles.save}
             onPress={() => {
               submit();
-              // setNewGoalMod(false)
+              setNewGoalMod(false)
             }}
           >
             <Text style={styles.saveText}>Save</Text>
