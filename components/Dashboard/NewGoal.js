@@ -37,25 +37,35 @@ const NewGoal = () => {
     let restOfWeek = end.diff(tod, 'days') + 1;
     let restOfMonth = restOfDays();
     let quantNum = Number.parseInt(quant);
+    const today = moment().format('MM-DD-YYYY');
     if (goal === '') {
       setGoalErr(true);
     } else if (!quantNum) {
       setQuantErr(true);
     } else {
-      // const mon = await firestore().collection('Users').doc(user.email).collection('Progress').doc('Month').get()
-      // const we = await firestore().collection('Users').doc(user.email).collection('Progress').doc('Week').get()
-      // console.log(mon, we)
-      // console.log(monthGoal, weekGoal)
-      firestore()
-        .collection('Users')
-        .doc(user.email)
-        .collection('Goals')
-        .add({
-          task: goal,
-          progress: 0,
-          quantity: quantNum,
-          frequency: newGoalMod.toLowerCase(),
-        });
+      if (newGoalMod === 'Today') {
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Goals')
+          .add({
+            task: goal,
+            progress: 0,
+            quantity: quantNum,
+            frequency: today,
+          });
+      } else {
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Goals')
+          .add({
+            task: goal,
+            progress: 0,
+            quantity: quantNum,
+            frequency: newGoalMod.toLowerCase(),
+          });
+      }
       if (newGoalMod === 'Daily') {
         firestore()
           .collection('Users')
@@ -98,6 +108,7 @@ const NewGoal = () => {
       }
       setGoal('');
       setQuant('');
+      setNewGoalMod(false)
     }
   };
 
@@ -138,7 +149,7 @@ const NewGoal = () => {
               setQuant('');
               setGoalErr(false);
               setQuantErr(false);
-              setNewGoalMod(false)
+              setNewGoalMod(false);
             }}
           >
             <Text style={styles.closeText}>Close</Text>
@@ -147,7 +158,6 @@ const NewGoal = () => {
             style={styles.save}
             onPress={() => {
               submit();
-              setNewGoalMod(false)
             }}
           >
             <Text style={styles.saveText}>Save</Text>

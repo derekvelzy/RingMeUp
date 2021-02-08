@@ -4,22 +4,36 @@ import { StyleSheet, Text, View, Animated, Dimensions, TouchableOpacity, TextInp
 import Svg, {Circle, Path} from 'react-native-svg';
 
 const Signup = ({screenFlipLogin}) => {
-  const {login, signup, incorrect, setIncorrect} = useContext(Context);
+  const {login, signup, signupErr, setSignupErr} = useContext(Context);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [checkPass, setCheckPass] = useState('');
+  const [checkErr, setCheckErr] = useState(false);
 
   const check = () => {
+    clear();
     if (pass === checkPass && pass !== '' && name !== '' && email !== '') {
       signup(name, email, pass)
+    } else {
+      setCheckErr(true);
     }
+  }
+
+  const clear = () => {
+    setCheckErr(false);
+    setSignupErr(false);
   }
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Signup</Text>
+      {signupErr || checkErr ?
+        signupErr ?
+        <Text style={styles.err}>Existing email</Text> : <Text style={styles.err}>Must be valid</Text>
+
+       : <Text style={styles.err}></Text>}
       <View style={styles.form}>
           <TextInput
             style={styles.input}
@@ -35,12 +49,14 @@ const Signup = ({screenFlipLogin}) => {
           />
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             placeholder="Password"
             value={pass}
             onChangeText={(e) => setPass(e)}
           />
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             placeholder="Re-enter Password"
             value={checkPass}
             onChangeText={(e) => setCheckPass(e)}
@@ -53,7 +69,10 @@ const Signup = ({screenFlipLogin}) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.back}
-            onPress={() => screenFlipLogin(1)}
+            onPress={() => {
+              screenFlipLogin(1);
+              clear();
+            }}
           >
             <Text style={styles.backText}>Back</Text>
           </TouchableOpacity>
@@ -82,6 +101,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(130, 217, 176)',
     height: Dimensions.get('window').height,
   },
+  err: {
+    marginTop: 20,
+    marginBottom: -15,
+    height: 20,
+    color: 'red',
+  },
   form: {
     marginTop: 20,
     alignItems: 'center',
@@ -95,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 7,
     alignItems: 'center',
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: 20,
   },
   signup: {
     marginTop: 20,

@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, Animated, Dimensions, TouchableOpacity, TextInp
 import Svg, {Circle, Path} from 'react-native-svg';
 
 const Login = ({screenFlipLogin}) => {
-  const {login, signup, incorrect, setIncorrect} = useContext(Context);
+  const {login, signup, incorrect, setIncorrect, loginErr, setLoginErr} = useContext(Context);
 
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
@@ -12,16 +12,18 @@ const Login = ({screenFlipLogin}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
+      {loginErr ? <Text style={styles.err}>Incorrect email or password</Text> : <Text style={styles.err}></Text>}
       <View style={styles.form}>
         <TextInput
           style={styles.input}
-          placeholder="email"
+          placeholder="Email"
           value={email}
           onChangeText={(e) => setEmail(e)}
         />
         <TextInput
           style={styles.input}
-          placeholder="pass"
+          secureTextEntry={true}
+          placeholder="Password"
           value={pass}
           onChangeText={(e) => setPass(e)}
         />
@@ -33,7 +35,10 @@ const Login = ({screenFlipLogin}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.back}
-          onPress={() => screenFlipLogin(1)}
+          onPress={() => {
+            screenFlipLogin(1);
+            setLoginErr(false);
+          }}
         >
           <Text style={styles.backText}>Back</Text>
         </TouchableOpacity>
@@ -60,6 +65,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  err: {
+    height: 20,
+    color: 'red',
+  },
   form: {
     alignItems: 'center',
   },
@@ -72,7 +81,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
     textAlign: 'center',
-    fontSize: 22,
+    fontSize: 20,
   },
   login: {
     marginTop: 30,

@@ -9,7 +9,6 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
   const {user, page, setPage, animate, weekGoal, weekProg, monthGoal, monthProg} = useContext(Context);
 
   useEffect(() => {
-    console.log('uuuuuzer', user);
     if (user) {
       dailyUpdate();
       weeklyUpdate();
@@ -91,41 +90,39 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
   const monthlyUpdate = async () => {
     if (frequency === 'monthly') {
       const startMonth = moment().startOf('month').format('M');
-      console.log(startMonth);
       let prevDate = await firestore()
         .collection('Users')
         .doc(user.email)
         .collection('Date')
         .doc('Month')
         .get();
-      console.log(prevDate._data.time === startMonth)
       if (prevDate._data.time !== startMonth) {
-        // firestore()
-        //   .collection('Users')
-        //   .doc(user.email)
-        //   .collection('Goals')
-        //   .doc(path)
-        //   .set({
-        //     task: text,
-        //     progress: 0,
-        //     quantity,
-        //     frequency,
-        //   })
-        // firestore()
-        //   .collection('Users')
-        //   .doc(user.email)
-        //   .collection('Date')
-        //   .doc('Week')
-        //   .set({time: startWeek})
-        // firestore()
-        //   .collection('Users')
-        //   .doc(user.email)
-        //   .collection('Progress')
-        //   .doc('Month')
-        //   .set({
-        //     goal: monthGoal,
-        //     progress: 0,
-        //   })
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Goals')
+          .doc(path)
+          .set({
+            task: text,
+            progress: 0,
+            quantity,
+            frequency,
+          })
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Date')
+          .doc('Month')
+          .set({time: startMonth})
+        firestore()
+          .collection('Users')
+          .doc(user.email)
+          .collection('Progress')
+          .doc('Month')
+          .set({
+            goal: monthGoal,
+            progress: 0,
+          })
       }
     }
   }
