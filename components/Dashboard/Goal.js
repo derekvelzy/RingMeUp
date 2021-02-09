@@ -378,14 +378,12 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
               >
                 <Icon name="ellipsis-v" size={30} color="rgb(220, 220, 220)" />
               </TouchableOpacity>
-              {/* <View> */}
-                <TextInput
-                  value={editText}
-                  placeholder="change"
-                  style={styles.editInput}
-                  onChangeText={(e) => setEditText(e)}
-                />
-              {/* </View> */}
+              <TextInput
+                value={editText}
+                placeholder="change"
+                style={styles.editInput}
+                onChangeText={(e) => setEditText(e)}
+              />
               <View style={styles.plusminus}>
                 <TouchableOpacity
                   style={styles.check}
@@ -429,7 +427,7 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
                 >
                   <Icon name="minus-circle" size={50} color="rgb(220, 220, 220)" />
                 </TouchableOpacity>
-                <Text>{progress}</Text>
+                <Text style={styles.progress}>{progress}</Text>
                 <TouchableOpacity
                   style={styles.check}
                   onPress={() => add()}
@@ -479,9 +477,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 15,
   },
-  edit : {
+  edit: {
     height: 50,
     marginLeft: 20,
+    marginRight: 15,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
@@ -494,13 +493,18 @@ const styles = StyleSheet.create({
     borderRadius: 23,
     width: Dimensions.get('window').width * 0.4,
     paddingLeft: 10,
-    fontSize: 16,
-    borderColor: 'rgb(200, 200, 200)'
+    fontSize: 18,
+    borderColor: 'rgb(200, 200, 200)',
+    fontFamily: 'Avenir Next'
   },
   plusminus: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginLeft: 5,
+  },
+  progress: {
+    alignSelf: 'center',
+    margin: 2
   },
   status: {
     backgroundColor: "rgb(220, 220, 220)",
@@ -513,6 +517,7 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     fontSize: 20,
     flexWrap: 'wrap',
+    fontFamily: 'Avenir Next'
   },
   textBox: {
     maxWidth: Dimensions.get('window').width * 0.4,

@@ -13,7 +13,7 @@ const Calendar = ({screenFlip}) => {
     <View style={styles.container}>
       <View style={styles.top}>
         <TouchableOpacity style={styles.viewDash} onPress={() => screenFlip(true)}>
-          <Text>View Dashboard</Text>
+          <Text style={{fontFamily: 'Avenir Next'}}>View Dashboard</Text>
         </TouchableOpacity>
       </View>
       <Svg style={styles.svg} width={Dimensions.get('window').width} height="220" viewBox={`0 0 1800 300`}>

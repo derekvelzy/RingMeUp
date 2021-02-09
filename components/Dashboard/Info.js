@@ -14,7 +14,7 @@ const Info = ({screenFlip}) => {
           onPress={() => screenFlip(false)}
           style={styles.viewCal}
         >
-          <Text>View Calendar</Text>
+          <Text style={{fontFamily: 'Avenir Next'}}>View Calendar</Text>
         </TouchableOpacity>
         <Charts />
       </View>

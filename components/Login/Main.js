@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupText: {
+    fontFamily: 'Avenir Next',
     fontSize: Dimensions.get('window').height * 0.03,
   },
   login: {
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loginText: {
+    fontFamily: 'Avenir Next',
     fontSize: Dimensions.get('window').height * 0.03,
     color: 'white',
   },
@@ -162,6 +164,7 @@ const styles = StyleSheet.create({
     marginTop: -100,
   },
   title: {
+    fontFamily: 'Avenir-Medium',
     color: 'white',
     marginTop: Dimensions.get('window').height * 0.2,
     fontSize: Dimensions.get('window').height * 0.05,

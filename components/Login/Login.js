@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   },
   backText: {
     fontSize: 18,
+    fontFamily: 'Avenir Next',
   },
   container: {
     flex: 1,
@@ -82,6 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     fontSize: 20,
+    fontFamily: 'Avenir Next',
   },
   login: {
     marginTop: 30,
@@ -95,11 +97,13 @@ const styles = StyleSheet.create({
   loginText: {
     color: 'white',
     fontSize: 22,
+    fontFamily: 'Avenir Next',
   },
   title: {
     color: 'rgb(130, 217, 176)',
     fontSize: Dimensions.get('window').height * 0.05,
     marginBottom: 30,
+    fontFamily: 'Avenir Next',
   }
 });
 

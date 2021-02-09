@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   backText: {
     color: 'white',
     fontSize: 18,
+    fontFamily: 'Avenir Next',
   },
   container: {
     alignItems: 'center',
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   err: {
-    marginTop: 20,
+    marginTop: 18,
     marginBottom: -15,
     height: 20,
     color: 'red',
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
     fontSize: 20,
+    fontFamily: 'Avenir Next',
   },
   signup: {
     marginTop: 20,
@@ -132,7 +134,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   signupText: {
-    fontSize: 22,
+    fontSize: 18,
+    fontFamily: 'Avenir Next',
   },
   svg: {
     position: 'absolute',
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     marginTop: -160,
   },
   title: {
-    // marginTop: Dimensions.get('window').height * 0.1,
+    fontFamily: 'Avenir Next',
     color: 'white',
     fontSize: Dimensions.get('window').height * 0.04,
   }

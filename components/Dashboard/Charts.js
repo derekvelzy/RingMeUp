@@ -160,13 +160,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     top: Dimensions.get('window').width * 0.17,
-
     alignSelf: 'center',
 
   },
   gaugeText: {
     fontSize: 25,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Avenir-Medium'
   },
   labels: {
     flexDirection: 'row',
@@ -178,7 +178,8 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontSize: 22,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Avenir-Medium'
   },
   pies: {
     flexDirection: 'row',

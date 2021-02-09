@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
   },
   closeText: {
     fontSize: 22,
+    fontFamily: 'Avenir Next',
   },
   container: {
     backgroundColor: 'white',
@@ -212,6 +213,7 @@ const styles = StyleSheet.create({
   },
   goals: {
     fontSize: 26,
+    fontFamily: 'Avenir Next'
   },
   goalText: {
     borderColor: "rgb(220, 220, 220)",
@@ -225,6 +227,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     marginBottom: 22,
+    fontFamily: 'Avenir Next'
   },
   popup: {
     backgroundColor: 'white',
@@ -240,6 +243,7 @@ const styles = StyleSheet.create({
   saveText: {
     color: 'white',
     fontSize: 22,
+    fontFamily: 'Avenir Next'
   },
   quantityText: {
     borderColor: "rgb(220, 220, 220)",
@@ -252,6 +256,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'Avenir Next'
   }
 });
 

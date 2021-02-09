@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
   goalText: {
     fontSize: 30,
     color: 'white',
+    fontFamily: 'Avenir Next'
   },
   goalTextBox: {
     width: Dimensions.get('window').width,

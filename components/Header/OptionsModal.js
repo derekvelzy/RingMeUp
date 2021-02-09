@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
   },
   closeText: {
     fontSize: 22,
+    fontFamily: 'Avenir Next',
   },
   container: {
     flexDirection: 'row',
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
   logoutText: {
     color: 'white',
     fontSize: 22,
+    fontFamily: 'Avenir Next',
   },
   popup: {
     // backgroundColor: 'white',

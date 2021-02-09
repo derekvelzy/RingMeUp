@@ -29,10 +29,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    height: 100,
+    marginTop: 40,
+    height: 60,
     width: Dimensions.get('window').width * 0.9,
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'space-between',
     padding: 10
   },
@@ -40,8 +41,9 @@ const styles = StyleSheet.create({
     width: 24,
   },
   title: {
-    fontSize: 30,
-    color: 'white'
+    fontFamily: 'Avenir-Medium',
+    fontSize: 32,
+    color: 'white',
   }
 });
 

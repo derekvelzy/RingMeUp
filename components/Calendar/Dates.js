@@ -92,10 +92,10 @@ const Dates = () => {
         key={i}
         onPress={() => setPopup(statement)}>
         <View style={styles.date}>
-          <Text style={{fontSize: 16}}>{i}</Text>
+          <Text style={{fontSize: 13, fontFamily: 'Avenir-Medium'}}>{i}</Text>
         </View>
         <View style={styles.number}>
-          <Text style={{color: 'white'}}>{reserved[formatDay] ? reserved[formatDay].length : 0}</Text>
+          <Text style={{color: 'white', fontSize: 13, fontFamily: 'Avenir-Medium'}}>{reserved[formatDay] ? reserved[formatDay].length : 0}</Text>
         </View>
       </TouchableOpacity>);
     }
@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 26,
     marginBottom: 10,
+    fontFamily: 'Avenir Next'
   },
 });
 

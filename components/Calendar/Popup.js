@@ -79,7 +79,7 @@ const Popup = () => {
           task: newText,
           progress: 0,
           quantity: quantNum,
-          frequency: today,
+          frequency: date,
         });
       slide(false);
     }
@@ -229,6 +229,7 @@ const styles = StyleSheet.create({
   cancelAddText: {
     color: 'white',
     fontSize: 18,
+    fontFamily: 'Avenir Next'
   },
   cancelAdd: {
     flexDirection: 'row',
@@ -248,10 +249,11 @@ const styles = StyleSheet.create({
   },
   closeText: {
     fontSize: 22,
+    fontFamily: 'Avenir Next'
   },
   container: {
     backgroundColor: 'white',
-    marginTop: Dimensions.get('window').height * 0.25,
+    marginTop: 130,
     marginLeft: Dimensions.get('window').width * 0.07,
     height: 480,
     width: Dimensions.get('window').width * 0.86,
@@ -271,6 +273,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    fontFamily: 'Avenir-Medium'
   },
   goal: {
     flexDirection: 'row',
@@ -283,6 +286,7 @@ const styles = StyleSheet.create({
   goalText: {
     fontSize: 20,
     flexWrap: 'wrap',
+    fontFamily: 'Avenir Next'
   },
   left: {
     justifyContent: 'center',
@@ -303,6 +307,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
     marginBottom: 22,
+    fontFamily: 'Avenir Next'
   },
   newText: {
     borderColor: "rgb(220, 220, 220)",
@@ -317,12 +322,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginBottom: 22,
     marginTop: 5,
+    fontFamily: 'Avenir Next'
   },
   noGoalText: {
     fontSize: 20,
     marginTop: 20,
     color: 'rgb(130, 130, 130)',
-    marginLeft: Dimensions.get('window').width * 0.13,
+    marginLeft: Dimensions.get('window').width * 0.12,
+    fontFamily: 'Avenir Next'
   },
   remove: {
     backgroundColor: 'rgb(255, 114, 110)',
@@ -335,10 +342,11 @@ const styles = StyleSheet.create({
   removeText: {
     color: 'white',
     fontSize: 16,
+    fontFamily: 'Avenir Next'
   },
   popup: {
     backgroundColor: 'white',
-  }
+  },
 });
 
 export default Popup;
