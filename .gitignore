@@ -4,6 +4,7 @@
 
 # Xcode
 #
+.plist
 *.hprof
 build/
 *.pbxuser

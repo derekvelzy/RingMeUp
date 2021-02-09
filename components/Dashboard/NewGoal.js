@@ -14,7 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 
 const NewGoal = () => {
-  const {user, newGoalMod, setNewGoalMod, weekGoal, weekProg, monthGoal, monthProg} = useContext(Context);
+  const {user, newGoalMod, setNewGoalMod, weekGoal, weekProg, monthGoal, monthProg, setResetDates} = useContext(Context);
 
   const [goal, setGoal] = useState('');
   const [quant, setQuant] = useState('');
@@ -30,6 +30,7 @@ const NewGoal = () => {
   }
 
   const submit = async () => {
+    setResetDates(true);
     setGoalErr(false);
     setQuantErr(false);
     let tod = moment(new Date());

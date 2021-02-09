@@ -8,11 +8,17 @@ import Info from './Info.js';
 import Svg, {Circle, Path} from 'react-native-svg';
 
 const Main = () => {
-  const {page, setPage, animate, svgShrink, svgMove} = useContext(Context);
+  const {page, setPage, animate, svgShrink, svgMove, resetDates, setResetDates} = useContext(Context);
 
   const screenAnim = useRef(new Animated.Value(0)).current;
 
   const screenFlip = (pos) => {
+    if (!pos) {
+      setPage('calendar')
+    } else {
+      setPage('dashboard')
+    }
+    setResetDates(!resetDates);
     return Animated.parallel([
       Animated.timing(screenAnim, {
         toValue: pos ? 0 : 1,
@@ -76,13 +82,6 @@ const Main = () => {
 }
 
 const styles = StyleSheet.create({
-  circle: {
-    backgroundColor: 'rgb(21, 27, 87)',
-    width: Dimensions.get('window').width,
-    paddingTop: 300,
-    marginTop: -300,
-    alignItems: 'center',
-  },
   container: {
     alignItems: 'center',
     backgroundColor: 'rgb(245, 245, 255)',

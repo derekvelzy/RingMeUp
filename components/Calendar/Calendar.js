@@ -26,7 +26,7 @@ const Calendar = ({screenFlip}) => {
             Z" />
         </Svg>
       <Dates />
-      <Popup />
+      {/* <Popup /> */}
     </View>
   );
 }

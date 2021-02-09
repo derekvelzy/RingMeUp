@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-nati
 import Modal from 'react-native-modal'
 
 const OptionsModal = () => {
-  const {mod, setMod, logout} = useContext(Context);
+  const {user, mod, setMod, logout} = useContext(Context);
 
   return (
     <Modal
@@ -17,12 +17,11 @@ const OptionsModal = () => {
       isVisible={mod}
     >
       <View style={styles.container}>
-        <Text style={styles.goals}>Options</Text>
         <TouchableOpacity
-          style={styles.close}
+          style={styles.logout}
           onPress={() => logout()}
         >
-          <Text style={styles.closeText}>Logout</Text>
+          <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.close}
@@ -48,10 +47,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
   container: {
+    flexDirection: 'row',
     backgroundColor: 'white',
     alignSelf: 'flex-start',
-    height: Dimensions.get('window').height * 0.5,
-    width: Dimensions.get('window').width * 0.86,
+    height: 80,
+    width: 320,
     borderRadius: 36,
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -63,6 +63,18 @@ const styles = StyleSheet.create({
   },
   goals: {
     fontSize: 26,
+  },
+  logout: {
+    backgroundColor: 'rgb(130, 217, 176)',
+    width: 120,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 25,
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 22,
   },
   popup: {
     // backgroundColor: 'white',

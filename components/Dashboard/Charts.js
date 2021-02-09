@@ -3,6 +3,7 @@ import { Context } from '../Context.js';
 import { StyleSheet, Text, View, Button, ScrollView, Dimensions, Animated } from 'react-native';
 import Pie from 'react-native-pie';
 import { months } from '../Calendar/Dates.js';
+import moment from 'moment';
 
 const Charts = () => {
   const {
@@ -93,7 +94,9 @@ const Charts = () => {
       <View style={styles.gauge}>
         <Animated.View
           style={{
-            marginLeft: Dimensions.get('window').width * 0.19,
+            width: Dimensions.get('window').width * 0.4,
+            marginRight: Dimensions.get('window').width * 0.04,
+            alignItems: 'center',
             transform: [
               {scale: chartShrink},
               {translateY: chartUp}
@@ -104,7 +107,9 @@ const Charts = () => {
         </Animated.View>
         <Animated.View
           style={{
-            marginRight: Dimensions.get('window').width * 0.16,
+            width: Dimensions.get('window').width * 0.4,
+            alignItems: 'center',
+            marginLeft: Dimensions.get('window').width * 0.04,
             transform: [
               {scale: chartShrink},
               {translateY: chartUp}
@@ -135,7 +140,7 @@ const Charts = () => {
             ]
           }}
         >
-          <Text style={styles.labelText}>03/07 - 03/13</Text>
+          <Text style={styles.labelText}>{moment().startOf('week').format('MM/DD')} - {moment().endOf('week').format('MM/DD')}</Text>
         </Animated.View>
       </View>
     </View>
@@ -155,7 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     top: Dimensions.get('window').width * 0.17,
-    width: Dimensions.get('window').width,
+
     alignSelf: 'center',
 
   },

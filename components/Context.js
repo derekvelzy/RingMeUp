@@ -2,7 +2,6 @@ import React, { createContext, useState, useRef, useEffect } from 'react';
 import { Animated, Dimensions } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
-import Goal from './Dashboard/Goal.js';
 import moment from 'moment';
 
 export const Context = createContext(null);
@@ -20,6 +19,7 @@ const ConfigProvider = ({children}) => {
   const [monthProg, setMonthProg] = useState(0);
   const [loginErr, setLoginErr] = useState(false);
   const [signupErr, setSignupErr] = useState(false);
+  const [resetDates, setResetDates] = useState(true);
 
   const animate = useRef(new Animated.Value(0)).current;
 
@@ -129,7 +129,7 @@ const ConfigProvider = ({children}) => {
     setSignupErr(false);
     try {
       await auth().createUserWithEmailAndPassword(email, pass);
-      await firestore()
+      firestore()
         .collection('Users')
         .doc(email.toLowerCase())
         .set({name})
@@ -157,6 +157,18 @@ const ConfigProvider = ({children}) => {
         .collection('Date')
         .doc('Month')
         .set({time: startMonth})
+      firestore()
+        .collection('Users')
+        .doc(email.toLowerCase())
+        .collection('Progress')
+        .doc('Week')
+        .set({goal: 0, progress: 0})
+      firestore()
+        .collection('Users')
+        .doc(email.toLowerCase())
+        .collection('Progress')
+        .doc('Month')
+        .set({goal: 0, progress: 0})
     } catch (e) {
       setSignupErr(true);
       console.log('error signing up', e);
@@ -212,7 +224,9 @@ const ConfigProvider = ({children}) => {
         loginErr,
         setLoginErr,
         signupErr,
-        setSignupErr
+        setSignupErr,
+        resetDates,
+        setResetDates
       }}>
       {children}
     </Context.Provider>

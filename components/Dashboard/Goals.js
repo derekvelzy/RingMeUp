@@ -43,41 +43,41 @@ const Goals = () => {
             const dat = dox.data();
             let key = dox._ref._documentPath._parts[dox._ref._documentPath._parts.length - 1]
             if (dat.frequency === 'daily') {
-              d.push(<Goal
-                text={dat.task}
-                day={i}
-                progress={dat.progress}
-                quantity={dat.quantity}
-                frequency={dat.frequency}
-                path={key}
-                key={key}/>);
+              d.push({
+                text: dat.task,
+                progress: dat.progress,
+                quantity: dat.quantity,
+                frequency: dat.frequency,
+                path: key,
+                key,
+              });
             } else if (dat.frequency === 'weekly') {
-              w.push(<Goal
-                text={dat.task}
-                day={i}
-                progress={dat.progress}
-                quantity={dat.quantity}
-                frequency={dat.frequency}
-                path={key}
-                key={key}/>);
+              w.push({
+                text: dat.task,
+                progress: dat.progress,
+                quantity: dat.quantity,
+                frequency: dat.frequency,
+                path: key,
+                key,
+              });
             } else if (dat.frequency === 'monthly') {
-              m.push(<Goal
-                text={dat.task}
-                day={i}
-                progress={dat.progress}
-                quantity={dat.quantity}
-                frequency={dat.frequency}
-                path={key}
-                key={key}/>);
+              m.push({
+                text: dat.task,
+                progress: dat.progress,
+                quantity: dat.quantity,
+                frequency: dat.frequency,
+                path: key,
+                key,
+              });
             } else if (dat.frequency === mom) {
-              t.push(<Goal
-                text={dat.task}
-                day={i}
-                progress={dat.progress}
-                quantity={dat.quantity}
-                frequency={dat.frequency}
-                path={key}
-                key={key}/>);
+              t.push({
+                text: dat.task,
+                progress: dat.progress,
+                quantity: dat.quantity,
+                frequency: dat.frequency,
+                path: key,
+                key,
+              });
             }
           });
           setToday(t);
@@ -87,6 +87,8 @@ const Goals = () => {
         });
     }
   }, [user])
+
+  let i = 0;
 
   return (
     <View style={styles.container}>
@@ -106,7 +108,19 @@ const Goals = () => {
           <Icon name="plus-circle" size={56} style={styles.icon} color="rgb(6, 191, 166)" />
         </TouchableOpacity>
       </Animated.View>
-        {today}
+      {today.map((d) => {
+        i++;
+        return (
+          <Goal
+            text={d.text}
+            day={i}
+            progress={d.progress}
+            quantity={d.quantity}
+            frequency={d.frequency}
+            path={d.path}
+            key={d.key}/>
+        )
+      })}
       <Animated.View
         style={{
           width: Dimensions.get('window').width,
@@ -122,7 +136,19 @@ const Goals = () => {
           <Icon name="plus-circle" size={56} style={styles.icon} color="rgb(6, 191, 166)" />
         </TouchableOpacity>
       </Animated.View>
-        {daily}
+      {daily.map((d) => {
+          i++;
+          return (
+            <Goal
+              text={d.text}
+              day={i}
+              progress={d.progress}
+              quantity={d.quantity}
+              frequency={d.frequency}
+              path={d.path}
+              key={d.key}/>
+          )
+        })}
       <Animated.View
         style={{
           width: Dimensions.get('window').width,
@@ -138,7 +164,19 @@ const Goals = () => {
           <Icon name="plus-circle" size={56} style={styles.icon} color="rgb(6, 191, 166)" />
         </TouchableOpacity>
       </Animated.View>
-      {weekly}
+      {weekly.map((d) => {
+          i++
+          return (
+            <Goal
+              text={d.text}
+              day={i}
+              progress={d.progress}
+              quantity={d.quantity}
+              frequency={d.frequency}
+              path={d.path}
+              key={d.key}/>
+          )
+        })}
       <Animated.View
         style={{
           width: Dimensions.get('window').width,
@@ -154,7 +192,19 @@ const Goals = () => {
           <Icon name="plus-circle" size={56} style={styles.icon} color="rgb(6, 191, 166)" />
         </TouchableOpacity>
       </Animated.View>
-      {monthly}
+      {monthly.map((d) => {
+          i++
+          return (
+            <Goal
+              text={d.text}
+              day={i}
+              progress={d.progress}
+              quantity={d.quantity}
+              frequency={d.frequency}
+              path={d.path}
+              key={d.key}/>
+          )
+        })}
     </View>
   );
 }

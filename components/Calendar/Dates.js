@@ -2,16 +2,52 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Context } from '../Context.js';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions, ImageBackground } from 'react-native';
 import moment from 'moment';
+import firestore from '@react-native-firebase/firestore';
+import Popup from './Popup.js';
 
 export const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 const Dates = () => {
-  const {setPopup} = useContext(Context);
+  const {user, setPopup, page, resetDates} = useContext(Context);
   const [calendar, setCalendar] = useState([]);
+  const [reserved, setReserved] = useState({});
 
   useEffect(() => {
     generateCal();
-  }, [])
+  }, [page, resetDates])
+
+  useEffect(() => {
+    if (user) {
+      return firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Goals')
+        .onSnapshot((querySnapshot) => {
+          const t = {};
+          let i = 0;
+          querySnapshot.forEach((dox) => {
+            i++;
+            const dat = dox.data();
+            if (dat.frequency !== 'monthly' && dat.frequency !== 'weekly' && dat.frequency !== 'daily') {
+              let key = dox._ref._documentPath._parts[dox._ref._documentPath._parts.length - 1]
+              if (!t[dat.frequency]) {
+                t[dat.frequency] = [{
+                  path: key,
+                  text: dat.task
+                }];
+              } else {
+                t[dat.frequency].push({
+                  path: key,
+                  text: dat.task
+                });
+              }
+            }
+
+          });
+          setReserved(t);
+        });
+    }
+  }, [user])
 
   const generateCal = () => {
     const today = [moment().startOf('month').format('d'), new Date().getMonth(), new Date().getFullYear()];
@@ -32,13 +68,34 @@ const Dates = () => {
 
     const daysInTheMonth = [];
     for (let i = 1; i <= (new Date(yearMonthLater, monthLater, 0).getDate()); i += 1) {
+      let underTenDay;
+      if (i < 10) {
+        underTenDay = 0 + i.toString();
+      } else {
+        underTenDay = i.toString();
+      }
+      let underTenMonth;
+      if (today[1] + 1 < 10) {
+        underTenMonth = 0 + (today[1] + 1).toString();
+      } else {
+        underTenMonth = (today[1] + 1).toString();
+      }
+      let formatDay = `${underTenMonth}-${underTenDay}-${today[2]}`;
+      let statement = {
+        date: formatDay,
+        data: reserved[formatDay],
+      }
+
       daysInTheMonth.push(
-      <TouchableOpacity style={styles.dateBox} key={i} onPress={() => setPopup(true)}>
+      <TouchableOpacity
+        style={styles.dateBox}
+        key={i}
+        onPress={() => setPopup(statement)}>
         <View style={styles.date}>
           <Text style={{fontSize: 16}}>{i}</Text>
         </View>
         <View style={styles.number}>
-          <Text style={{color: 'white'}}>2</Text>
+          <Text style={{color: 'white'}}>{reserved[formatDay] ? reserved[formatDay].length : 0}</Text>
         </View>
       </TouchableOpacity>);
     }
@@ -72,6 +129,7 @@ const Dates = () => {
       <View style={styles.border}>
         {calendar}
       </View>
+      <Popup />
     </View>
   );
 }

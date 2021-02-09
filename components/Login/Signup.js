@@ -31,7 +31,7 @@ const Signup = ({screenFlipLogin}) => {
       <Text style={styles.title}>Signup</Text>
       {signupErr || checkErr ?
         signupErr ?
-        <Text style={styles.err}>Existing email</Text> : <Text style={styles.err}>Must be valid</Text>
+        <Text style={styles.err}>Existing email</Text> : <Text style={styles.err}>Must enter valid name and password</Text>
 
        : <Text style={styles.err}></Text>}
       <View style={styles.form}>

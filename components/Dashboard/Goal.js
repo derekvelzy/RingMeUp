@@ -1,12 +1,15 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../Context.js';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Animated } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Animated, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 
 const Goal = ({text, day, progress, quantity, frequency, path}) => {
   const {user, page, setPage, animate, weekGoal, weekProg, monthGoal, monthProg} = useContext(Context);
+
+  const [edit, setEdit] = useState(false);
+  const [editText, setEditText] = useState(text);
 
   useEffect(() => {
     if (user) {
@@ -249,6 +252,103 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
     }
   }
 
+  const remove = () => {
+    const weekDiff = moment().endOf('week').diff(moment(), 'days');
+    const monthDiff = moment().endOf('month').diff(moment(), 'days');
+    if (frequency === 'daily') {
+      let prog = 0;
+      if (progress === quantity) {
+        prog = 1;
+      }
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Progress')
+        .doc('Week')
+        .set({
+          goal: weekGoal - (weekDiff + 1),
+          progress: weekProg - prog,
+        });
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Progress')
+        .doc('Month')
+        .set({
+          goal: monthGoal - (monthDiff + 1),
+          progress: monthProg - prog,
+        });
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Goals')
+        .doc(path)
+        .delete();
+    } else if (frequency === 'weekly') {
+      let prog = 0;
+      if (progress === quantity) {
+        prog = 5;
+      }
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Progress')
+        .doc('Week')
+        .set({
+          goal: weekGoal - 5,
+          progress: weekProg - prog,
+        });
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Goals')
+        .doc(path)
+        .delete();
+    } else if (frequency === 'monthly') {
+      let prog = 0;
+      if (progress === quantity) {
+        prog = 10;
+      }
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Progress')
+        .doc('Month')
+        .set({
+          goal: monthGoal - 10,
+          progress: monthProg - prog,
+        });
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Goals')
+        .doc(path)
+        .delete();
+    } else {
+      firestore()
+        .collection('Users')
+        .doc(user.email)
+        .collection('Goals')
+        .doc(path)
+        .delete();
+    }
+  }
+
+  const save = () => {
+    firestore()
+      .collection('Users')
+      .doc(user.email)
+      .collection('Goals')
+      .doc(path)
+      .set({
+        task: editText,
+        progress,
+        quantity,
+        frequency,
+      })
+    setEdit(false);
+  }
+
   return (
     <Animated.View
       style={{
@@ -264,58 +364,98 @@ const Goal = ({text, day, progress, quantity, frequency, path}) => {
       }}
     >
       <View style={{
-         width: Dimensions.get('window').width * 0.88,
-         // height: 70,
-         flexDirection: 'row',
-         justifyContent: 'space-between',
-         backgroundColor: '#fff',
-         alignItems: 'center',
-         padding: 12,
-         marginTop: 14,
-         marginBottom: 14,
-         borderRadius: 35,
          shadowOffset: {width: 0, height: 0},
          shadowColor: progress === quantity ? 'rgb(6, 191, 166)' : 'black',
          shadowOpacity: progress === quantity ? 0.7 : 0.15,
          shadowRadius: progress === quantity ? 20 : 15,
       }}>
-        <TouchableOpacity style={styles.edit}>
-          <Icon name="ellipsis-v" size={30} color="rgb(220, 220, 220)" />
-        </TouchableOpacity>
-        <View style={styles.textandstatus}>
-          <View style={styles.textBox}>
-            <Text style={styles.text}>{text}</Text>
-          </View>
-          <View style={styles.status}>
-            <View style={{
-              backgroundColor:"rgb(6, 191, 166)",
-              height: 10,
-              width: Dimensions.get('window').width * 0.4 * (progress/quantity),
-              borderRadius: 5
-            }} />
-          </View>
-        </View>
-        <View style={styles.plusminus}>
-          <TouchableOpacity
-            style={styles.check}
-            onPress={() => subtract()}
-          >
-            <Icon name="minus-circle" size={50} color="rgb(220, 220, 220)" />
-          </TouchableOpacity>
-          <Text>{progress}</Text>
-          <TouchableOpacity
-            style={styles.check}
-            onPress={() => add()}
-          >
-            <Icon name="plus-circle" size={50} color="rgb(6, 191, 166)" />
-          </TouchableOpacity>
-        </View>
+        {edit ?
+          (
+            <View style={styles.box}>
+              <TouchableOpacity
+                style={styles.edit}
+                onPress={() => setEdit(false)}
+              >
+                <Icon name="ellipsis-v" size={30} color="rgb(220, 220, 220)" />
+              </TouchableOpacity>
+              {/* <View> */}
+                <TextInput
+                  value={editText}
+                  placeholder="change"
+                  style={styles.editInput}
+                  onChangeText={(e) => setEditText(e)}
+                />
+              {/* </View> */}
+              <View style={styles.plusminus}>
+                <TouchableOpacity
+                  style={styles.check}
+                  onPress={() => remove()}
+                >
+                  <Icon name="times-circle" size={50} color="rgb(255, 114, 110)" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.check}
+                  onPress={() => save()}
+                >
+                  <Icon name="check-circle" size={50} color="rgb(6, 191, 166)" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ) : (
+            <View style={styles.box}>
+              <TouchableOpacity
+                style={styles.edit}
+                onPress={() => setEdit(true)}
+              >
+                <Icon name="ellipsis-v" size={30} color="rgb(220, 220, 220)" />
+              </TouchableOpacity>
+              <View style={styles.textandstatus}>
+                <View style={styles.textBox}>
+                  <Text style={styles.text}>{text}</Text>
+                </View>
+                <View style={styles.status}>
+                  <View style={{
+                    backgroundColor:"rgb(6, 191, 166)",
+                    height: 10,
+                    width: Dimensions.get('window').width * 0.4 * (progress/quantity),
+                    borderRadius: 5
+                  }} />
+                </View>
+              </View>
+              <View style={styles.plusminus}>
+                <TouchableOpacity
+                  style={styles.check}
+                  onPress={() => subtract()}
+                >
+                  <Icon name="minus-circle" size={50} color="rgb(220, 220, 220)" />
+                </TouchableOpacity>
+                <Text>{progress}</Text>
+                <TouchableOpacity
+                  style={styles.check}
+                  onPress={() => add()}
+                >
+                  <Icon name="plus-circle" size={50} color="rgb(6, 191, 166)" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
       </View>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
+  box: {
+    width: Dimensions.get('window').width * 0.88,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    padding: 12,
+    marginTop: 14,
+    marginBottom: 14,
+    borderRadius: 35,
+  },
   check : {
     marginLeft: 5,
     marginRight: 5,
@@ -345,6 +485,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 25,
+  },
+  editInput: {
+    position: 'absolute',
+    borderWidth: 1,
+    left: 60,
+    height: 46,
+    borderRadius: 23,
+    width: Dimensions.get('window').width * 0.4,
+    paddingLeft: 10,
+    fontSize: 16,
+    borderColor: 'rgb(200, 200, 200)'
   },
   plusminus: {
     flexDirection: 'row',
