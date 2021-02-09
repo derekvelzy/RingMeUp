@@ -43,4 +43,4 @@ From the repo
 3. Run ```cd ios/ && pod install``` in the command line
 3. Run ```npx react-native run-ios``` in the command line
 
---[Derek Velzy's Porfolio](https://www.dvelzyportfolio.com/)
+[Derek Velzy's Porfolio](https://www.dvelzyportfolio.com/)
